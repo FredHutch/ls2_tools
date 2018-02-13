@@ -1,7 +1,9 @@
 FROM fredhutch/ls2_easybuild_foss:2016b
 
 # easyconfig to build 
-ENV EASYCONFIG_NAME my_best_easyconfig.eb
+ARG EB_NAME
+ENV EB_NAME=${EB_NAME}
+
 # required OS packages for the build
 ENV INSTALL_OS_PKGS "awscli build-essential pkg-config libssl-dev unzip libc6-dev"
 # os pkg list to be removed after the build - in EasyBuild, the 'dummy' toolchain requires build-essential
@@ -16,17 +18,20 @@ COPY aws-batch-helpers/fetch-and-run/fetch_and_run.sh /home/neo/fetch_and_run.sh
 COPY easyconfigs/* /app/fh_easyconfigs/
 # R sources that cannot be programmatically downloaded
 COPY sources/* /app/sources/
+COPY install.sh /app
 # run script to download larger sources
 RUN /bin/bash /app/sources/download_sources.sh
 # install build-essential, build R, remove build-essential
 # EVERYTHING beyond build-essential needs to be moved into EB!!!
 USER root
-RUN apt-get update -y && apt-get install -y $INSTALL_OS_PKGS && \
-    su -c ". /app/lmod/lmod/init/bash && \
-           module use /app/modules/all && \
-           module load EasyBuild && \
-           eb -l $EASYCONFIG_NAME --robot" - neo && \
-    apt-get remove -y --purge $UNINSTALL_OS_PKGS && \
-    apt-get autoremove -y
-USER neo
-
+RUN mkdir /opt/software /var/tmp/build && chown neo:neo /opt/software /var/tmp/build
+RUN apt-get update -y && apt-get install -y $INSTALL_OS_PKGS 
+RUN  su -c "/bin/bash /app/install.sh" neo &&
+ module use /app/modules/all && \
+ module load EasyBuild" # && \
+ . /app/sources/dev_env.sh && \
+ cd /app/fh_easyconfigs && \
+ eb -l $EASYCONFIG_NAME --robot"
+#USER root
+#RUN  apt-get remove -y --purge $UNINSTALL_OS_PKGS && \
+# apt-get autoremove -y

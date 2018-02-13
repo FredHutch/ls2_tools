@@ -1,0 +1,32 @@
+# EasyBuild easyconfig 
+#
+# Author: John Dey
+# Fred Hutch Cancer Research Center
+# Seattle - United States
+
+name = 'tools'
+version = '1.0.0'
+
+easyblock = 'Bundle'
+
+homepage = 'https://github.com/FredHutch/ls2_tools'
+description = """Bundle of bio tools that does not require Perl, Python, Java or R"""
+
+toolchain = {'name': 'foss', 'version': '2016b'}
+
+dependencies = [
+    ('AMOS', '3.1.0'),
+    ('ataqv', '0.9.5'),
+    ('bam2wig', '1.4', '', True),
+    ('BamTools', '2.4.1'),
+    ('BamUtil', '1.0.14'),
+    ('Beast', '2.4.7'),
+    ('BCFtools', '1.6'),
+    ('BEDTools', '2.26.0'),
+    ('BLAST+', '2.6.0', '-Python-2.7.12'),
+    ('CAP3', '20151001'),
+    ('SAMtools', '1.6'),
+]
+
+moduleclass = 'bio'
+CAP3-20150211-foss-2016b.eb

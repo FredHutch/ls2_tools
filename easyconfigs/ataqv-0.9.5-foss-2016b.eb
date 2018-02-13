@@ -1,0 +1,44 @@
+# easybuild easyconfig
+
+name = 'ataqv'
+version = '0.9.5'
+
+easyblock = 'MakeCp'
+
+homepage = 'https://github.com/ParkerLab/ataqv'
+description = """A toolkit for measuring and comparing ATAC-seq results, made in the
+`Parker lab`_ at the University of Michigan. We wrote it to help us
+understand how well our ATAC-seq assays had worked, and to make it
+easier to spot differences that might be caused by library prep or
+sequencing."""
+
+toolchain = {'name': 'foss', 'version': '2016b'}
+
+source_urls = ['https://github.com/ParkerLab/ataqv/archive']
+#               https://github.com/ParkerLab/ataqv/archive/0.9.5.tar.gz
+sources = ['%(version)s.tar.gz']
+patches = ['ataqv-0.9.5.patch']
+
+builddependencies = [
+    ('Boost', '1.63.0'),
+    ('HTSlib', '1.3.1'), 
+    ('ncurses', '6.0'),
+]
+
+dependencies = [
+    ('Boost', '1.63.0'),
+    ('HTSlib', '1.3.1'), 
+    ('ncurses', '6.0'),
+]
+
+#prebuildopts = ' make cloneLib && '
+
+files_to_copy = ["build", "testdata"]
+
+sanity_check_paths = {
+    'files': ["build/ataqv"],
+    'dirs': ["build"],
+}
+modextrapaths = {'PATH': 'build'}
+
+moduleclass = 'bio'

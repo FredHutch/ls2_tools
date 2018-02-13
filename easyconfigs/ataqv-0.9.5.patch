@@ -1,0 +1,12 @@
+diff -ruN ataqv-0.9.5.orig/Makefile ataqv-0.9.5/Makefile
+--- ataqv-0.9.5.orig/Makefile	2017-08-18 09:03:53.000000000 -0700
++++ ataqv-0.9.5/Makefile	2017-10-27 12:48:44.774327000 -0700
+@@ -9,7 +9,7 @@
+ #
+ 
+ SRC_DIR = src
+-CPP_DIR = $(shell realpath -e $(SRC_DIR)/cpp)
++CPP_DIR = $(shell readlink -e $(SRC_DIR)/cpp)
+ SCRIPTS_DIR = $(SRC_DIR)/scripts
+ WEB_DIR = $(SRC_DIR)/web
+ BUILD_DIR = build
